@@ -26,9 +26,10 @@ button17 = telebot.types.KeyboardButton(17)
 button18 = telebot.types.KeyboardButton(18)
 button19 = telebot.types.KeyboardButton(19)
 button20 = telebot.types.KeyboardButton(20)
+exit_button = telebot.types.KeyboardButton('Quit')
 keyboard.add(button1, button2, button3, button4, button5, button6, button7,
              button8, button9, button10, button11, button12, button13, button14,
-             button15, button16, button17, button18, button19, button20)
+             button15, button16, button17, button18, button19, button20, exit_button)
 
 
 
@@ -44,8 +45,12 @@ def start(message):
     bot.register_next_step_handler(message, check)
 
 def check(message):
-    link = news[int(message.text)-1].find('a', class_='ArticleItem--image').get('href')
-    title = news[int(message.text)-1].find('a', class_='ArticleItem--name').text
-    bot.send_message(message.chat.id, f'{title}\n\n{link}')
+    if message.text == 'Quit':
+        bot.send_message(message.chat.id, 'Goodbye!')
+    else:
+        link = news[int(message.text)-1].find('a', class_='ArticleItem--image').get('href')
+        title = news[int(message.text)-1].find('a', class_='ArticleItem--name').text
+        bot.send_message(message.chat.id, f'{title}\n\n{link}')
+        bot.send_message(message.chat.id, 'type /start or /news to see other news')
 
 bot.polling()
